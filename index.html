@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fototaxia</title>
+
+<style>
+
+html,body{
+margin:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:white;
+}
+
+#pantalla{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:white;
+}
+
+#negro{
+position:absolute;
+right:0;
+top:0;
+width:50%;
+height:100%;
+background:black;
+display:none;
+}
+
+#inicio{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+background:white;
+}
+
+button{
+font-size:36px;
+padding:25px 50px;
+border:none;
+border-radius:12px;
+background:#007AFF;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="inicio">
+<button onclick="iniciar()">INICIAR</button>
+</div>
+
+<div id="pantalla">
+<div id="negro"></div>
+</div>
+
+<script>
+
+const BLANCO=300000;
+const MITAD=300000;
+
+let inicio;
+
+function iniciar(){
+
+document.getElementById("inicio").style.display="none";
+
+if(document.documentElement.requestFullscreen){
+document.documentElement.requestFullscreen();
+}
+
+inicio=Date.now();
+
+requestAnimationFrame(actualizar);
+
+}
+
+function actualizar(){
+
+let t=Date.now()-inicio;
+
+if(t<BLANCO){
+
+document.getElementById("negro").style.display="none";
+
+}
+else if(t<BLANCO+MITAD){
+
+document.getElementById("negro").style.display="block";
+
+}
+else{
+
+document.getElementById("negro").style.display="none";
+document.body.style.background="white";
+
+return;
+
+}
+
+requestAnimationFrame(actualizar);
+
+}
+
+</script>
+
+</body>
+</html>
