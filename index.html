@@ -2,18 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Fototaxia</title>
 
 <style>
-
 html,body{
 margin:0;
 width:100%;
 height:100%;
 overflow:hidden;
-background:white;
+font-family:Arial,sans-serif;
 }
 
 #pantalla{
@@ -44,25 +43,25 @@ height:100%;
 display:flex;
 justify-content:center;
 align-items:center;
-background:white;
+background:#d9d9d9;
+z-index:100;
 }
 
 button{
-font-size:36px;
-padding:25px 50px;
-border:none;
-border-radius:12px;
-background:#007AFF;
+font-size:40px;
+padding:30px 60px;
+background:#0066ff;
 color:white;
+border:none;
+border-radius:15px;
 }
-
 </style>
 </head>
 
 <body>
 
 <div id="inicio">
-<button onclick="iniciar()">INICIAR</button>
+<button id="btn">INICIAR PROTOCOLO</button>
 </div>
 
 <div id="pantalla">
@@ -71,49 +70,41 @@ color:white;
 
 <script>
 
-const BLANCO=300000;
-const MITAD=300000;
+const blanco=5*60*1000;
+const mitad=5*60*1000;
 
-let inicio;
+let t0=null;
 
-function iniciar(){
+document.getElementById("btn").onclick=function(){
 
 document.getElementById("inicio").style.display="none";
 
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
+t0=performance.now();
 
-inicio=Date.now();
-
-requestAnimationFrame(actualizar);
+requestAnimationFrame(loop);
 
 }
 
-function actualizar(){
+function loop(){
 
-let t=Date.now()-inicio;
+let t=performance.now()-t0;
 
-if(t<BLANCO){
+if(t<blanco){
 
 document.getElementById("negro").style.display="none";
 
-}
-else if(t<BLANCO+MITAD){
+}else if(t<blanco+mitad){
 
 document.getElementById("negro").style.display="block";
 
-}
-else{
+}else{
 
 document.getElementById("negro").style.display="none";
-document.body.style.background="white";
-
 return;
 
 }
 
-requestAnimationFrame(actualizar);
+requestAnimationFrame(loop);
 
 }
 
