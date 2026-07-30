@@ -89,11 +89,18 @@ const contador = document.getElementById("contador");
 
 let t0 = 0;
 
-btn.onclick = () => {
+function comenzar(){
+
     inicio.style.display = "none";
+
     t0 = performance.now();
+
     requestAnimationFrame(actualizar);
-};
+
+}
+
+btn.addEventListener("click", comenzar);
+btn.addEventListener("touchstart", comenzar);
 
 function actualizar(){
 
