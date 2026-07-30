@@ -2,27 +2,32 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prueba Fototaxia</title>
+<title>Fototaxia iPad</title>
 
 <style>
+
 html,body{
     margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    font-family:Arial,sans-serif;
 }
 
 #pantalla{
-    position:fixed;
-    inset:0;
-    background:white;
+    width:100%;
+    height:100%;
+    background:#cccccc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-family:Arial;
 }
 
 #negro{
-    position:absolute;
+    position:fixed;
     top:0;
     right:0;
     width:50%;
@@ -31,92 +36,73 @@ html,body{
     display:none;
 }
 
-#inicio{
-    position:fixed;
-    inset:0;
-    background:#bfbfbf;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:100;
-}
-
 h1{
-    color:black;
-    margin-bottom:30px;
+    font-size:40px;
 }
 
-button{
-    font-size:32px;
-    padding:20px 40px;
-    border:none;
-    border-radius:12px;
-    background:#0066ff;
-    color:white;
-    cursor:pointer;
+p{
+    font-size:30px;
 }
 
-#contador{
-    margin-top:25px;
-    font-size:28px;
-    color:black;
-}
 </style>
+
 </head>
 
 <body>
 
-<div id="inicio">
-    <h1>Prueba del protocolo</h1>
-    <button id="btn">INICIAR</button>
-    <div id="contador"></div>
+<div id="pantalla">
+    <h1>TOCA PARA INICIAR</h1>
+    <p>Protocolo de fototaxia</p>
 </div>
 
-<div id="pantalla">
-    <div id="negro"></div>
-</div>
+<div id="negro"></div>
+
 
 <script>
 
-const blanco = 5 * 60 * 1000; // 5 segundos para probar
-const mitad  = 5 * 60 * 1000; // 5 segundos para probar
+let iniciado=false;
+let tiempoInicio;
 
-const btn = document.getElementById("btn");
-const inicio = document.getElementById("inicio");
-const negro = document.getElementById("negro");
-const contador = document.getElementById("contador");
+const faseBlanca=5000; // prueba: 5 segundos
+const faseMitad=5000;  // prueba: 5 segundos
 
-let t0 = 0;
 
-function comenzar(){
+document.addEventListener("touchstart", iniciar);
+document.addEventListener("click", iniciar);
 
-    inicio.style.display = "none";
 
-    t0 = performance.now();
+function iniciar(){
 
-    requestAnimationFrame(actualizar);
+    if(iniciado) return;
+
+    iniciado=true;
+
+    document.getElementById("pantalla").style.display="none";
+
+    tiempoInicio=Date.now();
+
+    actualizar();
 
 }
 
-btn.addEventListener("click", comenzar);
-btn.addEventListener("touchstart", comenzar);
 
 function actualizar(){
 
-    let t = performance.now() - t0;
+    let tiempo=Date.now()-tiempoInicio;
 
-    if(t < blanco){
+    if(tiempo < faseBlanca){
 
-        negro.style.display = "none";
+        document.getElementById("negro").style.display="none";
 
-    }else if(t < blanco + mitad){
+    }
+    else if(tiempo < faseBlanca+faseMitad){
 
-        negro.style.display = "block";
+        document.getElementById("negro").style.display="block";
 
-    }else{
+    }
+    else{
 
-        alert("Fin de la prueba");
+        document.body.style.background="white";
         return;
 
     }
